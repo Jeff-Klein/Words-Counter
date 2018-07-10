@@ -32,19 +32,19 @@ namespace Counters.FrequencyCounter
         {
             var fileManager = new FileManager();
             var fileLines = fileManager.GetFileLines(fileName);
-            return CountWordsFromList(fileLines);
+            return CountWordsFromTextLines(fileLines);
         }
 
-        public IOrderedEnumerable<KeyValuePair<string, int>> CountWordsFromList(IEnumerable<string> fileLines)
+        public IOrderedEnumerable<KeyValuePair<string, int>> CountWordsFromTextLines(IEnumerable<string> textLines)
         {
             cancelToken = new CancellationTokenSource();
             var wordsCountList = new ConcurrentDictionary<string, int>();
-            var totalNumberOfLines = fileLines.Count();
+            var totalNumberOfLines = textLines.Count();
             var processedLines = 0;
 
             try
             {               
-                Parallel.ForEach(fileLines, (line, state) => 
+                Parallel.ForEach(textLines, (line, state) => 
                 {
                     if (cancelToken.Token.IsCancellationRequested)
                         state.Stop();
